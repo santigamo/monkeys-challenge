@@ -1,6 +1,9 @@
 # monkeys-challenge
 Java solution to the Agile Monkeys challenge
 
+## 👀 Overview
+The project follows a clean architecture, with the application layer interacting with the external system through a data provider interface. This allows the application layer to be isolated from the implementation details of the external system and makes it easier to test and maintain the code.
+
 ## 🤖 Technologies
 - [Java 18](https://openjdk.java.net/projects/jdk/18/): The backend system is implemented using Java 17, the latest stable available versions of this language, which provides us with different features that we take advantage of in the API implementation.
 - [Spring boot](https://spring.io/projects/spring-boot): The system uses Spring Boot as the web framework to handle HTTP requests and responses.
@@ -17,7 +20,12 @@ Java solution to the Agile Monkeys challenge
 3. Execute `docker compose run -d -p "8080:8080" java-skeleton-api gradle clean build bootRun -x test`
 
 ## 🎯 API Calls
-- `GET /api/v1/health` - Health check
+- `GET /actuator/health` - Health check
+- `GET /api/customers` - Get all customers
+- `GET /api/customers/{id}` - Get customer by id
+- `POST /api/customers` - Create customer
+- `PUT /api/customers/{id}` - Update customer
+- `DELETE /api/customers/{id}` - Delete customer
 
 ## 👽 Technical Details
 ### 📚 Dependencies
