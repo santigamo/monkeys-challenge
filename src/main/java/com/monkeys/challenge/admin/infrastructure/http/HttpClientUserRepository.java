@@ -31,7 +31,7 @@ public class HttpClientUserRepository implements UserRepository {
 
     private static final String TOKEN_PATH = "oauth/token";
     private static final String USER_PATH = "api/v2/users";
-    private static final String LOGIN_BODY_PATTERN = "grant_type=password&username=%s&password=%s&audience=%s&scope=&client_id=%s&client_secret=%s";
+    private static final String LOGIN_BODY_PATTERN = "grant_type=password&username=%s&password=%s&audience=%s&client_id=%s&client_secret=%s";
     private static final String MANAGEMENT_TOKEN_BODY_PATTERN = "{\"client_id\":\"%s\",\"client_secret\":\"%s\",\"audience\":\"https://monkey-challenge.uk.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}";
     private static final String CREATE_USER_BODY_PATTERN = "{\"email\":\"%s\",\"username\":\"%s\",\"password\":\"%s\",\"connection\":\"Username-Password-Authentication\"}";
    private static final String UPDATE_USER_BODY_PATTERN = "{\"name\":\"%s\",\"username\":\"%s\"}";
