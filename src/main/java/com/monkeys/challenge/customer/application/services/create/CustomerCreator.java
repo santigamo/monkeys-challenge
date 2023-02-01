@@ -10,9 +10,9 @@ public class CustomerCreator {
 
     private final CustomerRepository customerRepository;
 
-    public CustomerCreatorResponse create(CustomerCreatorRequest request) {
+    public CustomerCreatorResponse create(CustomerCreatorRequest request, String createdBy) {
         log.debug("Creating customer with name: {}", request.name());
-        var savedCustomer = customerRepository.save(request.toDomain());
+        var savedCustomer = customerRepository.save(request.toDomain(), createdBy);
 
         log.debug("Customer created with id: {}", savedCustomer.getId());
         return new CustomerCreatorResponse(savedCustomer.getId());
