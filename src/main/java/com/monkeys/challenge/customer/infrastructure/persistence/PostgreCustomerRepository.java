@@ -17,15 +17,15 @@ public class PostgreCustomerRepository implements CustomerRepository {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public Customer save(Customer customer) {
+    public Customer save(Customer customer, String createdBy) {
         //? Save the new customer
         var query = "INSERT INTO customer (id, name, surname, createdBy, updatedBy) VALUES (:id, :name, :surname, :createdBy, :updatedBy)";
         var parameters = new MapSqlParameterSource()
                 .addValue("id", customer.getId())
                 .addValue("name", customer.getName())
                 .addValue("surname", customer.getSurname())
-                .addValue("createdBy", "test")
-                .addValue("updatedBy", "test");
+                .addValue("createdBy", createdBy)
+                .addValue("updatedBy", createdBy);
 
 
         //? Execute query
