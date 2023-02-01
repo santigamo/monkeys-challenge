@@ -1,5 +1,6 @@
 package com.monkeys.challenge.admin.infrastructure.configuration;
 
+import com.monkeys.challenge.admin.application.services.create.UserCreator;
 import com.monkeys.challenge.admin.application.services.login.LoginService;
 import com.monkeys.challenge.admin.domain.SecurityRepository;
 import com.monkeys.challenge.admin.infrastructure.http.HttpClientSecurityRepository;
@@ -17,5 +18,10 @@ public class AdminDependencyInjectionConfig {
     @Bean
     LoginService securityService(final SecurityRepository securityRepository) {
         return new LoginService(securityRepository);
+    }
+
+    @Bean
+    UserCreator userCreator(final SecurityRepository securityRepository) {
+        return new UserCreator(securityRepository);
     }
 }
