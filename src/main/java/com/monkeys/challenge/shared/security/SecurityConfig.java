@@ -29,12 +29,14 @@ public class SecurityConfig {
         This is where we configure the security required for our endpoints and setup our app to serve as
         an OAuth2 Resource Server, using JWT validation.
         */
-        http.authorizeRequests()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/api/private").authenticated()
-                .requestMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
+        http.csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/login", "/actuator/**").permitAll()
+                .anyRequest().authenticated()
                 .and().cors()
                 .and().oauth2ResourceServer().jwt();
+
         return http.build();
     }
 
