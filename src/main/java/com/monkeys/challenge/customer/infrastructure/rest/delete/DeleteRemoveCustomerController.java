@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController
 @Log4j2
 @RequiredArgsConstructor
@@ -17,11 +19,11 @@ public class DeleteRemoveCustomerController {
     private final CustomerRemover customerRemover;
 
     @DeleteMapping(value = "/customers/{id}")
-    @PreAuthorize("hasAuthority('delete:customers')")
     public ResponseEntity removeCustomer(
+            Principal principal,
            @PathVariable String id
     ) {
-        log.debug("Received request to remove the customer with id: {}", id);
+        log.debug("Received request to remove the customer with id: {} from user: {}", id, principal.getName());
         customerRemover.remove(id);
         return ResponseEntity.noContent().build();
     }
