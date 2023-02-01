@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Log4j2
 public class PostCreateCustomerController {
-    private final CustomerCreator customerCreateService;
+    private final CustomerCreator customerCreate;
 
     @PostMapping(value = "/customers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('create:customers')")
@@ -30,7 +30,7 @@ public class PostCreateCustomerController {
             @RequestBody CustomerCreatorRequest request
     ) {
         log.debug("Received request to create the customer: {} from user: {}", request.name(), user.getName());
-        var response = customerCreateService.create(request);
+        var response = customerCreate.create(request);
         return ResponseEntity.ok(response);
     }
 }
