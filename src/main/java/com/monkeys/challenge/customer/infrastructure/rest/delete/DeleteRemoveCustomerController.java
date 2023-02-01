@@ -4,6 +4,7 @@ import com.monkeys.challenge.customer.application.services.delete.CustomerRemove
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,8 @@ public class DeleteRemoveCustomerController {
 
     private final CustomerRemover customerRemover;
 
-    @DeleteMapping(value = "/customers/{id}", produces = "application/json")
+    @DeleteMapping(value = "/customers/{id}")
+    @PreAuthorize("hasAuthority('delete:customers')")
     public ResponseEntity removeCustomer(
            @PathVariable String id
     ) {

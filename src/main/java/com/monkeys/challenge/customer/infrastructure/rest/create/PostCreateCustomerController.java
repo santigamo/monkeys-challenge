@@ -5,7 +5,11 @@ import com.monkeys.challenge.customer.application.services.create.CustomerCreato
 import com.monkeys.challenge.customer.application.services.create.CustomerCreatorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,11 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostCreateCustomerController {
     private final CustomerCreator customerCreateService;
 
-    @PostMapping("/customers")
+    @PostMapping(value = "/customers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('create:customers')")
     public ResponseEntity<CustomerCreatorResponse> createCustomer(
+            @AuthenticationPrincipal OidcUser user,
             @RequestBody CustomerCreatorRequest request
     ) {
-        log.debug("Received request to create the customer: {}", request.name());
+        log.debug("Received request to create the customer: {} from user: {}", request.name(), user.getName());
         var response = customerCreateService.create(request);
         return ResponseEntity.ok(response);
     }
