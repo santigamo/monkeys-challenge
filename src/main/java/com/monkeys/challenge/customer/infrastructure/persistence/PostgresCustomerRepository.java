@@ -2,8 +2,10 @@ package com.monkeys.challenge.customer.infrastructure.persistence;
 
 import com.monkeys.challenge.customer.domain.Customer;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
+import com.monkeys.challenge.customer.domain.exceptions.CustomerAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -12,7 +14,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Log4j2
-public class PostgreCustomerRepository implements CustomerRepository {
+public class PostgresCustomerRepository implements CustomerRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -33,9 +35,10 @@ public class PostgreCustomerRepository implements CustomerRepository {
             jdbcTemplate.update(
                     query, parameters
             );
-        } catch (Exception e) {
-            log.error("Customer {} already exists", customer.getName());
-            throw e;
+        }
+        catch (Exception e) {
+            log.error("Customer {} already exists with id: {}", customer.getName(), customer.getId());
+            throw new CustomerAlreadyExistsException(customer.getName());
         }
 
         log.debug("Saved customer with name: {} and id: {}", customer.getName(), customer.getId());
