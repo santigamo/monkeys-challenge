@@ -4,6 +4,7 @@ import com.monkeys.challenge.admin.application.services.create.UserCreator;
 import com.monkeys.challenge.admin.application.services.delete.UserRemover;
 import com.monkeys.challenge.admin.application.services.find.UserFinder;
 import com.monkeys.challenge.admin.application.services.login.LoginService;
+import com.monkeys.challenge.admin.application.services.role.UserRoleManager;
 import com.monkeys.challenge.admin.application.services.update.UserUpdater;
 import com.monkeys.challenge.admin.domain.UserRepository;
 import com.monkeys.challenge.admin.infrastructure.http.HttpClientUserRepository;
@@ -41,5 +42,10 @@ public class AdminDependencyInjectionConfig {
     @Bean
     UserUpdater userUpdater(final UserRepository userRepository) {
         return new UserUpdater(userRepository);
+    }
+
+    @Bean
+    UserRoleManager userRoleManager(final UserRepository userRepository) {
+        return new UserRoleManager(userRepository);
     }
 }

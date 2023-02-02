@@ -35,6 +35,13 @@ public class HttpClientUserRepository implements UserRepository {
     private static final String MANAGEMENT_TOKEN_BODY_PATTERN = "{\"client_id\":\"%s\",\"client_secret\":\"%s\",\"audience\":\"https://monkey-challenge.uk.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}";
     private static final String CREATE_USER_BODY_PATTERN = "{\"email\":\"%s\",\"username\":\"%s\",\"password\":\"%s\",\"connection\":\"Username-Password-Authentication\"}";
    private static final String UPDATE_USER_BODY_PATTERN = "{\"name\":\"%s\",\"username\":\"%s\"}";
+   private static final String ADD_ADMIN_ROLE_BODY_PATTERN = """
+           {
+             "roles": [
+               "rol_5nxlqI7ChI8ICF9S"
+             ]
+           }
+           """;
     public static final String BEARER = "Bearer ";
     public static final String INTERNAL_SERVER_ERROR = "Internal server error: {}";
     public static final String AUTH0 = "/auth0%7C";
@@ -143,6 +150,23 @@ public class HttpClientUserRepository implements UserRepository {
             log.error("Error parsing response: {}", e.getMessage());
             throw new GenericError();
         }
+    }
+
+    @Override
+    public boolean changeAdminStatus(String userId) {
+        //? Create request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(issuer + USER_PATH + AUTH0 + userId+ "/roles"))
+                .header(AUTHORIZATION, BEARER + getManagementToken())
+                .POST(HttpRequest.BodyPublishers.ofString(ADD_ADMIN_ROLE_BODY_PATTERN)).build();
+
+        //? Send request
+        var response = sendRequest(request);
+        if (response.statusCode() != 200) {
+            log.error("Change admin status error: {}", response.body());
+            throw new GenericError();
+        }
+        return true;
     }
 
     @Override
