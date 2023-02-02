@@ -7,12 +7,23 @@ The project follows a clean architecture, with the application layer interacting
 ## 🤖 Technologies
 - [Java 18](https://openjdk.java.net/projects/jdk/18/): The backend system is implemented using Java 17, the latest stable available versions of this language, which provides us with different features that we take advantage of in the API implementation.
 - [Spring boot](https://spring.io/projects/spring-boot): The system uses Spring Boot as the web framework to handle HTTP requests and responses.
+- [Docker](https://www.docker.com/): Docker is used to containerize the application and its dependencies.
+- [Auth0](https://auth0.com/): Auth0 is used as provider to manage the authentication and authorization of the application.
 
 ## ☝️ How to run this project
 ### ️Make
 1. Install `make` on your computer, if you do not already have it.
 2. Start the application: `make up`
 3. Run the application tests: `make test`
+
+### Maven
+1. Open a terminal and go to the project folder.
+2. Start the application: `mvn spring-boot:run`
+
+### Docker
+1. Install docker on your computer, if you do not already have it.
+2. Open a terminal and go to the project folder.
+3. Build the image: `docker build -t java-monkey-api .`
 
 ### Docker compose
 1. Install docker and docker-compose on your computer, if you do not already have it.
@@ -39,10 +50,10 @@ The project follows a clean architecture, with the application layer interacting
 - SOLID: We have always tried to follow the SOLID principles, which are the basis of good software development.
 
 ### ✨ Implementation highlights
-- In the infrastructure structure layer we have the [configuration package](src/main/java/com/monkeys/challenge/infrastructure/configuration) where we can find:
-    - The [DatabaseConfig](src/main/java/com/monkeys/challenge/infrastructure/configuration/DatabaseConfig.java): which is responsible for configuring the database connection.
-    - The [DependencyInjectionConfig](src/main/java/com/monkeys/challenge/infrastructure/configuration/DependencyInjectionConfig.java): which is responsible for configuring the dependency injection of the project.
+- In the infrastructure structure layer we have the [configuration package](src/main/java/com/monkeys/challenge/customer/infrastructure/configuration) where we can find:
+    - The [DatabaseConfig](src/main/java/com/monkeys/challenge/customer/infrastructure/configuration/DatabaseConfig.java): which is responsible for configuring the database connection.
+    - The [DependencyInjectionConfig](src/main/java/com/monkeys/challenge/customer/infrastructure/configuration/DependencyInjectionConfig.java): which is responsible for configuring the dependency injection of the project.
 - [application.yml](src/main/resources/application.properties)
     - `server.shutdown = graceful`: This property is responsible for allowing the application to finish the current requests before shutting down.
 - [DB Migration folder](src/main/resources/db/migration): This folder contains the scripts that are executed when the application starts. Are responsible for creating the tables in the database if they do not exist and migrating the database if necessary.
-- Exception are defined individually in the [exception package](src/main/java/com/monkeys/challenge/domain/exceptions) and are managed by the [ControllerAdvisor](src/main/java/com/monkeys/challenge/infrastructure/exceptions/ControllerAdvisor.java) to keep a simple but ordered and powerful error handling.
+- Exception are defined individually in the [exception package](src/main/java/com/monkeys/challenge/customer/exceptions) and are managed by the [ControllerAdvisor](src/main/java/com/monkeys/challenge/customer/infrastructure/exceptions/ControllerAdvisor.java) to keep a simple but ordered and powerful error handling.
