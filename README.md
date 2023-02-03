@@ -1,8 +1,8 @@
-<h1>
+<h1  align="center">
   🐒 Java solution to the Agile Monkeys challenge
 </h1>
 
-<p style="text-align:center;">
+<p align="center">
   <a href="https://github.com/santigamo/monkeys-challenge/actions/workflows/maven.yml"><img src="https://github.com/santigamo/monkeys-challenge/actions/workflows/maven.yml/badge.svg" alt="Build & Test" /></a>
   <a href="#"><img src="https://img.shields.io/static/v1?label=JDK&message=17&color=blueviolet" alt="JDK 17"/></a>
 </p>
@@ -11,12 +11,10 @@
 The project follows a clean architecture, with the application layer interacting with the external system through a data provider interface. This allows the application layer to be isolated from the implementation details of the external system and makes it easier to test and maintain the code.
 
 ## 🤖 Technologies
-- [Java 18](https://openjdk.java.net/projects/jdk/18/): The backend system is implemented using Java 17, the latest stable available versions of this language, which provides us with different features that we take advantage of in the API implementation.
+- [Java 17](https://openjdk.java.net/projects/jdk/17/): The backend system is implemented using Java 17, the latest stable available versions of this language, which provides us with different features that we take advantage of in the API implementation.
 - [Spring boot](https://spring.io/projects/spring-boot): The system uses Spring Boot as the web framework to handle HTTP requests and responses.
 - [Docker](https://www.docker.com/): Docker is used to containerize the application and its dependencies.
 - [Auth0](https://auth0.com/): Auth0 is used as provider to manage the authentication and authorization of the application.
-
-
 
 ## ☝️ How to run this project
 ### ️Make
@@ -46,12 +44,15 @@ The project follows a clean architecture, with the application layer interacting
 - `PUT /api/customers/{id}` - Update customer
 - `DELETE /api/customers/{id}` - Delete customer
 
+Attached with the project is a [Postman collection](Monkeys%20Challenge.postman_collection.json) with all the API calls to easily test the application.
+
 ## 👽 Technical Details
 ### 📚 Dependencies
 - [Lombok](https://projectlombok.org/): Used to reduce boilerplate code in the project.
 - [PostgresSQL](https://www.postgresql.org/): The driver to connect with the database used in the project.
 - [H2](https://www.h2database.com/): in-memory database used for testing.
 - [Flyway](https://flywaydb.org/): Used to initialize the tables and manage database migrations.
+- [OpenAPI](https://swagger.io/specification/): Used to generate the API documentation.
 
 ### 🏗️ Architecture
 - Clean Architecture: In the project we have always maintained a clean architecture, giving great importance to not coupling the domain and application layers to any framework. Pushing these needs to the infrastructure layer.
