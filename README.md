@@ -1,5 +1,11 @@
-# monkeys-challenge
-Java solution to the Agile Monkeys challenge
+<h1>
+  🐒 Java solution to the Agile Monkeys challenge
+</h1>
+
+<p style="text-align:center;">
+  <a href="https://github.com/santigamo/monkeys-challenge/actions/workflows/maven.yml"><img src="https://github.com/santigamo/monkeys-challenge/actions/workflows/maven.yml/badge.svg" alt="Build & Test" /></a>
+  <a href="#"><img src="https://img.shields.io/static/v1?label=JDK&message=17&color=blueviolet" alt="JDK 17"/></a>
+</p>
 
 ## 👀 Overview
 The project follows a clean architecture, with the application layer interacting with the external system through a data provider interface. This allows the application layer to be isolated from the implementation details of the external system and makes it easier to test and maintain the code.
@@ -9,6 +15,8 @@ The project follows a clean architecture, with the application layer interacting
 - [Spring boot](https://spring.io/projects/spring-boot): The system uses Spring Boot as the web framework to handle HTTP requests and responses.
 - [Docker](https://www.docker.com/): Docker is used to containerize the application and its dependencies.
 - [Auth0](https://auth0.com/): Auth0 is used as provider to manage the authentication and authorization of the application.
+
+
 
 ## ☝️ How to run this project
 ### ️Make
