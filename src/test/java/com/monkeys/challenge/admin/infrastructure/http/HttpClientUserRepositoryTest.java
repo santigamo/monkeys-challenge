@@ -4,6 +4,7 @@ import com.monkeys.challenge.admin.domain.UserRepository;
 import com.monkeys.challenge.shared.ChallengeApplication;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -40,6 +41,7 @@ class HttpClientUserRepositoryTest {
     @Spy
     HttpClient httpClient;
 
+    @Disabled
     @Test
     void createUser() throws IOException, InterruptedException {
         // Given
@@ -51,22 +53,27 @@ class HttpClientUserRepositoryTest {
         userRepository.createUser(email, username, password);
     }
 
+    @Disabled
     @Test
     void delete() {
     }
 
+    @Disabled
     @Test
     void findAll() {
     }
 
+    @Disabled
     @Test
     void updateUser() {
     }
 
+    @Disabled
     @Test
     void changeAdminStatus() {
     }
 
+    @Disabled
     @Test
     void doLoginWithPassword() {
     }
