@@ -18,11 +18,13 @@ public class AdminControllerAdvisor extends ResponseEntityExceptionHandler {
     public static final String TIMESTAMP = "timestamp";
     public static final String MESSAGE = "message";
 
+
+
     @ExceptionHandler(UserAuthenticationException.class)
     public ResponseEntity<Object> handleUserAuthenticationException(UserAuthenticationException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(MESSAGE, ex.getMessage());
+        body.put(MESSAGE, "User authentication failed");
 
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }

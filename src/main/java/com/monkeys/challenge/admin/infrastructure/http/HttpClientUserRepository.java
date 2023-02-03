@@ -6,10 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monkeys.challenge.admin.domain.UserRepository;
-import com.monkeys.challenge.admin.domain.exceptions.GenericError;
-import com.monkeys.challenge.admin.domain.exceptions.UserRemoveException;
-import com.monkeys.challenge.admin.domain.exceptions.UserUpdateException;
+import com.monkeys.challenge.admin.domain.UserRole;
+import com.monkeys.challenge.admin.domain.exceptions.*;
 import com.monkeys.challenge.admin.infrastructure.rest.find.User;
+import lombok.AccessLevel;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,27 +36,34 @@ public class HttpClientUserRepository implements UserRepository {
     private static final String MANAGEMENT_TOKEN_BODY_PATTERN = "{\"client_id\":\"%s\",\"client_secret\":\"%s\",\"audience\":\"https://monkey-challenge.uk.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}";
     private static final String CREATE_USER_BODY_PATTERN = "{\"email\":\"%s\",\"username\":\"%s\",\"password\":\"%s\",\"connection\":\"Username-Password-Authentication\"}";
    private static final String UPDATE_USER_BODY_PATTERN = "{\"name\":\"%s\",\"username\":\"%s\"}";
-   private static final String ADD_ADMIN_ROLE_BODY_PATTERN = """
+   private static final String ADMIN_ROLE_BODY_PATTERN = """
            {
-             "roles": [
-               "rol_5nxlqI7ChI8ICF9S"
-             ]
-           }
+              "roles": [
+                "%s"
+              ]
+            }
            """;
     public static final String BEARER = "Bearer ";
     public static final String INTERNAL_SERVER_ERROR = "Internal server error: {}";
     public static final String AUTH0 = "/auth0%7C";
+    public static final String MESSAGE = "message";
+    public static final String ROLE_PATH_FRAGMENT = "/roles";
 
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
+    @Setter(AccessLevel.PROTECTED)
     private String issuer;
     @Value("${auth0.audience}")
+    @Setter(AccessLevel.PROTECTED)
     private String audience;
     @Value("${auth0.client-id}")
+    @Setter(AccessLevel.PROTECTED)
     private String clientId;
     @Value("${auth0.client-secret}")
+    @Setter(AccessLevel.PROTECTED)
     private String clientSecret;
     private final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+    @SneakyThrows
     @Override
     public void createUser(String email, String username, String password) {
         //? Get management api token
@@ -72,7 +80,15 @@ public class HttpClientUserRepository implements UserRepository {
                 .POST(HttpRequest.BodyPublishers.ofString(body)).build();
 
         //? Send request
-        sendRequest(request);
+        var response = sendRequest(request);
+
+        if (response.statusCode() != 201) {
+            var causa = mapper.readTree(response.body()).get(MESSAGE).asText();
+            log.error("Error creating user: {}", causa);
+            throw new UserCreationException();
+        }
+
+        log.debug("User created successfully: {}", response.body());
     }
 
     @SneakyThrows
@@ -91,11 +107,11 @@ public class HttpClientUserRepository implements UserRepository {
         var response = sendRequest(request);
 
         if (response.statusCode() != 204) {
-            var causa = mapper.readTree(response.body()).get("message").asText();
+            var causa = mapper.readTree(response.body()).get(MESSAGE).asText();
             log.error("Error deleting user: {}", causa);
             throw new UserRemoveException(causa);
         }
-        log.info("User deleted: {}", response.body());
+        log.info("User deleted: {}", id);
     }
 
     @Override
@@ -138,13 +154,13 @@ public class HttpClientUserRepository implements UserRepository {
         var response = sendRequest(request);
 
         if (response.statusCode() != 200) {
-            var causa = mapper.readTree(response.body()).get("message").asText("");
+            var causa = mapper.readTree(response.body()).get(MESSAGE).asText("");
             log.error("Error updating user: {}", causa);
             throw new UserUpdateException(causa);
         }
-        log.info("User updated: {}", response.body());
 
         try {
+            log.info("User updated: {}", response.body());
             return mapper.readValue(response.body(), User.class);
         } catch (JsonProcessingException e) {
             log.error("Error parsing response: {}", e.getMessage());
@@ -152,21 +168,74 @@ public class HttpClientUserRepository implements UserRepository {
         }
     }
 
+    /**
+     * @param userId The userId of the user to get roles
+     * @return A list of {@link UserRole}
+     */
     @Override
-    public boolean changeAdminStatus(String userId) {
+    public List<UserRole> getUserRoles(String userId) {
         //? Create request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(issuer + USER_PATH + AUTH0 + userId+ "/roles"))
+                .uri(URI.create(issuer + USER_PATH + AUTH0 + userId+ ROLE_PATH_FRAGMENT))
                 .header(AUTHORIZATION, BEARER + getManagementToken())
-                .POST(HttpRequest.BodyPublishers.ofString(ADD_ADMIN_ROLE_BODY_PATTERN)).build();
+                .GET().build();
 
         //? Send request
         var response = sendRequest(request);
-        if (response.statusCode() != 200) {
-            log.error("Change admin status error: {}", response.body());
+        List<UserRole> userRoles;
+        try{
+            if (response.statusCode() != 200) throw new GenericError();
+            userRoles = mapper.readValue(response.body(), new TypeReference<>() {});
+        } catch (Exception e) {
+            log.error("Error getting user roles: {}", e.getMessage());
             throw new GenericError();
         }
-        return true;
+        log.debug("Found {} user roles", userRoles.size());
+        return userRoles;
+    }
+
+    /**
+     * @param userId The userId of the user to add admin role
+     * @param roleId The roleId of the role to add
+     */
+    @Override
+    public void addRole(String userId, String roleId) {
+        //? Create request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(issuer + USER_PATH + AUTH0 + userId+ ROLE_PATH_FRAGMENT))
+                .header(AUTHORIZATION, BEARER + getManagementToken())
+                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .POST(HttpRequest.BodyPublishers.ofString(ADMIN_ROLE_BODY_PATTERN.formatted(roleId))).build();
+
+        //? Send request
+        var response = sendRequest(request);
+        if (response.statusCode() != 204) {
+            log.error("Set role \"{}\" error: {}",roleId, response.body());
+            throw new GenericError();
+        }
+        log.debug("Role \"{}\" added successfully", roleId);
+    }
+
+    /**
+     * @param userId The userId of the user to remove admin role
+     * @param roleId The roleId of the role to remove
+     */
+    @Override
+    public void removeRole(String userId, String roleId) {
+        //? Create request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(issuer + USER_PATH + AUTH0 + userId+ ROLE_PATH_FRAGMENT))
+                .header(AUTHORIZATION, BEARER + getManagementToken())
+                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .method("DELETE", HttpRequest.BodyPublishers.ofString(ADMIN_ROLE_BODY_PATTERN.formatted(roleId))).build();
+
+        //? Send request
+        var response = sendRequest(request);
+        if (response.statusCode() != 204) {
+            log.error("Delete role \"{}\" error: {}",roleId, response.body());
+            throw new GenericError();
+        }
+        log.debug("Role \"{}\" removed successfully",roleId);
     }
 
     @Override
@@ -184,13 +253,13 @@ public class HttpClientUserRepository implements UserRepository {
         var response = sendRequest(request);
         if (response.statusCode() != 200) {
             log.error("Login error: {}", response.body());
-            throw new GenericError();
+            throw new UserAuthenticationException();
         }
 
         return response.body();
     }
 
-    private String getManagementToken() {
+    protected String getManagementToken() {
         //? Prepare body
         var body = String.format(MANAGEMENT_TOKEN_BODY_PATTERN, clientId, clientSecret);
 
@@ -210,7 +279,7 @@ public class HttpClientUserRepository implements UserRepository {
         }
 
         //? Parse response
-        JsonNode jsonNode = null;
+        JsonNode jsonNode;
         try {
             jsonNode = mapper.readTree(response.body());
         } catch (JsonProcessingException e) {
@@ -220,7 +289,7 @@ public class HttpClientUserRepository implements UserRepository {
         return jsonNode.get("access_token").asText();
     }
 
-    private HttpResponse<String> sendRequest(HttpRequest request) {
+    protected HttpResponse<String> sendRequest(HttpRequest request) {
         try {
             return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {

@@ -14,13 +14,20 @@ public class GetMakeAdminController {
 
     private final UserRoleManager userRoleManager;
 
-    @GetMapping(value = "/users/{userId}/admin")
+    @GetMapping(value = "/users/{userId}/admin", produces = "application/json")
     @PreAuthorize("hasAuthority('update:users')")
-    public ResponseEntity addRoleToUser(
+    public ResponseEntity<UserAdminStatus> addRoleToUser(
             @PathVariable String userId
     ) {
         log.debug("Received request to change admin status to user {}", userId);
-        userRoleManager.changeAdminStatus(userId);
-        return ResponseEntity.ok().build();
+        var isAdmin = userRoleManager.changeAdminStatus(userId);
+
+        if (isAdmin) {
+            return ResponseEntity.ok(new UserAdminStatus(userId,"The user is now admin"));
+        } else {
+            return ResponseEntity.ok(new UserAdminStatus(userId,"User is no longer an admin"));
+        }
     }
+
+    public record UserAdminStatus(String userId, String status) {    }
 }

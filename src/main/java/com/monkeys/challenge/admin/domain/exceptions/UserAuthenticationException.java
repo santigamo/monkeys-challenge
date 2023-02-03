@@ -1,7 +1,7 @@
 package com.monkeys.challenge.admin.domain.exceptions;
 
 public class UserAuthenticationException extends RuntimeException {
-    public UserAuthenticationException(String message) {
-        super(message);
+    public UserAuthenticationException() {
+        super();
     }
 }

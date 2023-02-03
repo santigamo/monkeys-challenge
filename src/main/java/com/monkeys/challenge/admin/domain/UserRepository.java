@@ -11,5 +11,7 @@ public interface UserRepository {
     void delete(String id);
     List<User> findAll();
     User updateUser(String id, String email, String username);
-    boolean changeAdminStatus(String userId);
+    List<UserRole> getUserRoles(String userId);
+    void addRole(String userId, String roleId);
+    void removeRole(String userId, String roleId);
 }
