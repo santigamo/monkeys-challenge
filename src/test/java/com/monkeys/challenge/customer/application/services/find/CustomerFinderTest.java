@@ -3,7 +3,6 @@ package com.monkeys.challenge.customer.application.services.find;
 import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.domain.Customer;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
-import com.monkeys.challenge.customer.infrastructure.rest.find.ListCustomersResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,20 +19,14 @@ class CustomerFinderTest extends BaseTest {
     private CustomerRepository customerRepository;
     private CustomerFinder customerFinder;
 
-    private Customer customer;
+    private CustomerFinder.CustomerDTO customer;
 
     @BeforeEach
     void setUp() {
         customerRepository = mock(CustomerRepository.class);
         customerFinder = new CustomerFinder(customerRepository);
 
-        customer = Customer.builder()
-                .id(UUID.fromString(CUSTOMER_ID))
-                .name(CUSTOMER_NAME)
-                .surname(CUSTOMER_SURNAME)
-                .avatar(CUSTOMER_AVATAR)
-                .createdBy(CREATOR_USER)
-                .build();
+        customer = new CustomerFinder.CustomerDTO(UUID.fromString(CUSTOMER_ID), CUSTOMER_NAME);
     }
 
     @Test
@@ -56,19 +49,22 @@ class CustomerFinderTest extends BaseTest {
         var actualCustomer = executeFinder();
 
         // then
-        assertTrue(actualCustomer.customers().isEmpty());
+        assertTrue(actualCustomer.isEmpty());
     }
 
-    private void thenTheCustomerShouldBeListed(ListCustomersResponse actualCustomer) {
-        var expectedCustomer = new ListCustomersResponse(List.of(customer));
+    private void thenTheCustomerShouldBeListed(List<CustomerFinder.CustomerDTO> actualCustomer) {
+        var expectedCustomer = List.of(customer);
         assertEquals(expectedCustomer, actualCustomer);
     }
 
-    private ListCustomersResponse executeFinder() {
+    private List<CustomerFinder.CustomerDTO> executeFinder() {
         return customerFinder.listCustomers();
     }
 
     private void givenASavedCustomer() {
+        givenFixedUUID(CUSTOMER_ID);
+        Customer customer = new Customer(CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR);
+        givenFixedUUID(CUSTOMER_ID);
         when(customerRepository.findAll()).thenReturn(List.of(customer));
     }
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,26 +20,20 @@ class GetListCustomersControllerTest extends BaseTest {
 
     private CustomerFinder customerFinder;
     private GetListCustomersController controller;
-    private Customer customer;
+    private CustomerFinder.CustomerDTO customer;
 
     @BeforeEach
     void setUp() {
         customerFinder = mock(CustomerFinder.class);
         controller = new GetListCustomersController(customerFinder);
 
-        customer = Customer.builder()
-                .id(UUID.fromString(CUSTOMER_ID))
-                .name(CUSTOMER_NAME)
-                .surname(CUSTOMER_SURNAME)
-                .avatar(CUSTOMER_AVATAR)
-                .createdBy(CREATOR_USER)
-                .build();
+        customer = new CustomerFinder.CustomerDTO(UUID.fromString(CUSTOMER_ID), CUSTOMER_NAME);
     }
 
     @Test
     void should_return_the_customer_list_response() {
         // Given - customer finder returns a list of customers
-        var listCustomersResponse = new ListCustomersResponse(List.of(customer));
+        var listCustomersResponse = List.of(customer);
         when(customerFinder.listCustomers()).thenReturn(listCustomersResponse);
 
         // When - the controller is called
@@ -51,7 +46,7 @@ class GetListCustomersControllerTest extends BaseTest {
     @Test
     void should_return_an_empty_list_of_customers() {
         // Given - customer finder returns an empty list of customers
-        var listCustomersResponse = new ListCustomersResponse(List.of());
+        List<CustomerFinder.CustomerDTO> listCustomersResponse = Collections.emptyList();
         when(customerFinder.listCustomers()).thenReturn(listCustomersResponse);
 
         // When - the controller is called

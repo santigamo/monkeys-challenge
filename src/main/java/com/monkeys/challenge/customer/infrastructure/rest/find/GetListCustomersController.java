@@ -18,9 +18,9 @@ public class GetListCustomersController {
 
     @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('read:customers')")
-    public ResponseEntity<ListCustomersResponse> listCustomers() {
+    public ResponseEntity listCustomers() {
         log.debug("Received request to list the customers");
-       var response = customerFinder.listCustomers();
-       return ResponseEntity.ok(response);
+        var response = customerFinder.listCustomers();
+        return ResponseEntity.ok(response);
     }
 }
