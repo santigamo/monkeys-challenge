@@ -4,7 +4,8 @@
 
 <p align="center">
   <a href="https://github.com/santigamo/monkeys-challenge/actions/workflows/maven.yml"><img src="https://github.com/santigamo/monkeys-challenge/actions/workflows/maven.yml/badge.svg" alt="Build & Test" /></a>
-  <a href="#"><img src="https://img.shields.io/static/v1?label=JDK&message=17&color=blueviolet" alt="JDK 17"/></a>
+  <a href="#"><img src="https://img.shields.io/static/v1?label=Java SE&message=17(TLS)&color=blueviolet&logo=OpenJDK" alt="JDK 17"/></a>
+  <a href="https://github.com/santigamo/monkeys-challenge/actions/workflows/codeql.yml"><img src="https://github.com/santigamo/monkeys-challenge/actions/workflows/codeql.yml/badge.svg" alt="Analyze vulnerabilities" /></a>
 </p>
 
 ## 👀 Overview
