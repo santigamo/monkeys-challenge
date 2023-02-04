@@ -7,12 +7,20 @@ import lombok.extern.log4j.Log4j2;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service class with find customers operations.
+ */
 @AllArgsConstructor
 @Log4j2
 public class CustomerFinder {
 
+    //* Customer repository.
     private final CustomerRepository customerRepository;
 
+    /**
+     * List all customers.
+     * @return List of customers.
+     */
     public List<CustomerDTO> listCustomers() {
         var customers = customerRepository.findAll();
         log.debug("Found {} customers", customers.size());
@@ -22,13 +30,24 @@ public class CustomerFinder {
                 .toList();
     }
 
+    /**
+     * Get customer by id.
+     * @param id Customer id.
+     * @return Customer details.
+     */
     public CustomerDetailsDTO getById(String id) {
         var customer = customerRepository.findById(id);
         log.debug("Found customer with id: {}", id);
         return new CustomerDetailsDTO(customer.getId(), customer.getName(), customer.getSurname(), customer.getAvatar(), customer.getCreatedBy(), customer.getUpdatedBy());
     }
 
+    /**
+     * Customer DTO.
+     */
     public record CustomerDTO(UUID id, String name) {}
 
+    /**
+     * Customer details DTO.
+     */
     public record CustomerDetailsDTO(UUID id, String name, String surname, String avatar, String createdBy, String updatedBy) {}
 }

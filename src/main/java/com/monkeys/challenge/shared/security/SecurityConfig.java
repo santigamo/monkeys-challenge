@@ -15,18 +15,27 @@ import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Configures our application with Spring Security to restrict access to our API endpoints.
+ * @author Santi
  */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    //* The audience of our OAuth2 provider.
     @Value("${auth0.audience}")
     private String audience;
 
+    //* The issuer of our OAuth2 provider.
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuer;
 
+    /**
+     * Configures the security filter chain.
+     * @param http The HttpSecurity object to configure.
+     * @return The configured security filter chain.
+     * @throws Exception If an error occurs.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         /*
@@ -47,6 +56,10 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Configures the JWT authentication converter.
+     * @return The configured JWT authentication converter.
+     */
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         /*
         By default, Spring Security does not get the authorities from permissions claim of the token, to keep the authorization
@@ -61,6 +74,10 @@ public class SecurityConfig {
         return jwtConverter;
     }
 
+    /**
+     * Configures the JWT decoder.
+     * @return The configured JWT decoder.
+     */
     @Bean
     JwtDecoder jwtDecoder() {
         /*

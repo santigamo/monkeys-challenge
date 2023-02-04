@@ -12,9 +12,14 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Controller advice to handle exceptions.
+ * @author Santi
+ */
 @ControllerAdvice
 public class CustomerControllerAdvisor extends ResponseEntityExceptionHandler {
 
+    //* Handles CustomerNotFoundException.
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<Object> handleCustomerNotFoundException(CustomerNotFoundException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -24,6 +29,7 @@ public class CustomerControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    //* Handles CustomerAlreadyExistsException.
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<Object> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException ex) {
         Map<String, Object> body = new LinkedHashMap<>();

@@ -7,20 +7,30 @@ import com.monkeys.challenge.customer.domain.exceptions.CustomerNotFoundExceptio
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * PostgresSQL implementation of {@link CustomerRepository}
+ * @author Santi
+ */
 @AllArgsConstructor
 @Log4j2
 public class PostgresCustomerRepository implements CustomerRepository {
 
+    /**
+     * Support for named parameters in JDBC
+     */
     private NamedParameterJdbcTemplate jdbcTemplate;
 
+   /**
+    * {@inheritDoc}
+    */
     @Override
     public Customer save(Customer customer, String createdBy) {
         //? Save the new customer
@@ -49,6 +59,55 @@ public class PostgresCustomerRepository implements CustomerRepository {
         return customer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update(String id, String name, String surname, String avatar, String updatedBy) {
+        //? Update customer
+        StringBuilder queryBuilder = new StringBuilder("UPDATE customer SET updatedBy = :updatedBy");
+
+        var parameters = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("updatedBy", updatedBy);
+
+        //? Add optionals parameters to query
+
+        if (StringUtils.hasText(name)) {
+            queryBuilder.append(", name = :name");
+            parameters.addValue("name", name);
+        }
+
+        if (StringUtils.hasText(surname)) {
+            queryBuilder.append(", surname = :surname");
+            parameters.addValue("surname", surname);
+        }
+
+        if (StringUtils.hasText(avatar)) {
+            queryBuilder.append(", avatar = :avatar");
+            parameters.addValue("avatar", avatar);
+        }
+
+        //? Add where clause
+        queryBuilder.append(" WHERE id = :id");
+
+        //? Execute query
+        try {
+            jdbcTemplate.update(
+                    queryBuilder.toString(), parameters
+            );
+        }
+        catch (Exception e) {
+            log.error("Customer with id \"{}\" not found", id);
+            throw new CustomerNotFoundException(id);
+        }
+
+        log.debug("Updated customer with id: {}", id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Customer> findAll() {
         //? Get all customers
@@ -62,8 +121,7 @@ public class PostgresCustomerRepository implements CustomerRepository {
     }
 
     /**
-     * @param id  The id of the customer to find
-     * @return   The customer with the given id
+     * {@inheritDoc}
      */
     @Override
     public Customer findById(String id) {
@@ -82,6 +140,9 @@ public class PostgresCustomerRepository implements CustomerRepository {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete(String id) {
         //? Delete customer
