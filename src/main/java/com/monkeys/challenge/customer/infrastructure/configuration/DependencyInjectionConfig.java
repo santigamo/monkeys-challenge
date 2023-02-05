@@ -7,7 +7,7 @@ import com.monkeys.challenge.customer.application.services.image.ImageUploader;
 import com.monkeys.challenge.customer.application.services.update.CustomerUpdater;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
 import com.monkeys.challenge.customer.domain.ImageRepository;
-import com.monkeys.challenge.customer.infrastructure.imagekit.ImageKitImageRepository;
+import com.monkeys.challenge.customer.infrastructure.http.OkHttpImageRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,7 +45,7 @@ public class DependencyInjectionConfig {
     //* Bean to inject the ImageUploader service.
     @Bean
     ImageRepository imageRepository() {
-        return new ImageKitImageRepository();
+        return new OkHttpImageRepository();
     }
 
     //* Bean to inject the ImageUploader service.

@@ -1,12 +1,13 @@
 package com.monkeys.challenge.customer.infrastructure.persistence;
 
+import com.monkeys.challenge.admin.domain.exceptions.GenericError;
 import com.monkeys.challenge.customer.domain.Customer;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
 import com.monkeys.challenge.customer.domain.exceptions.CustomerAlreadyExistsException;
 import com.monkeys.challenge.customer.domain.exceptions.CustomerNotFoundException;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -98,8 +99,8 @@ public class PostgresCustomerRepository implements CustomerRepository {
             );
         }
         catch (Exception e) {
-            log.error("Customer with id \"{}\" not found", id);
-            throw new CustomerNotFoundException(id);
+            log.error("Error Updating customer {}", id);
+            throw new GenericError();
         }
 
         log.debug("Updated customer with id: {}", id);
@@ -158,7 +159,6 @@ public class PostgresCustomerRepository implements CustomerRepository {
         log.debug("Deleted customer with id: {}", id);
     }
 
-    @NotNull
     private static RowMapper<Customer> mapRow() {
         return (rs, rowNum) -> Customer.builder()
                 .id(UUID.fromString(rs.getString("id")))
