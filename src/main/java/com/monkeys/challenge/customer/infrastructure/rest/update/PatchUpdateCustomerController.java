@@ -1,6 +1,7 @@
 package com.monkeys.challenge.customer.infrastructure.rest.update;
 
 import com.monkeys.challenge.customer.application.services.update.CustomerUpdater;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ public class PatchUpdateCustomerController {
 
     @PatchMapping(value = "/customers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('update:customers')")
+    @Operation(summary = "Update a customer", tags = {"customers"})
     public ResponseEntity updateCustomer(
             Principal principal,
             @PathVariable String id,

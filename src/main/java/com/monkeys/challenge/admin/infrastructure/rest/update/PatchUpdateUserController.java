@@ -2,6 +2,7 @@ package com.monkeys.challenge.admin.infrastructure.rest.update;
 
 import com.monkeys.challenge.admin.application.services.update.UserUpdater;
 import com.monkeys.challenge.admin.infrastructure.rest.find.User;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ public class PatchUpdateUserController {
 
     @PatchMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('update:users')")
+    @Operation(summary = "Update a user", tags = {"users"})
     public ResponseEntity<User> updateUser(
             @PathVariable String id,
             @RequestBody UpdateUserRequest request

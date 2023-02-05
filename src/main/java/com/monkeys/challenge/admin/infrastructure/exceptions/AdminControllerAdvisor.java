@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class AdminControllerAdvisor extends ResponseEntityExceptionHandler {
 
 
 
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "User authentication failed")
     @ExceptionHandler(UserAuthenticationException.class)
     public ResponseEntity<Object> handleUserAuthenticationException(UserAuthenticationException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -29,6 +31,7 @@ public class AdminControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
+    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "User creation failed")
     @ExceptionHandler(UserCreationException.class)
     public ResponseEntity<Object> handleUserCreationException(UserCreationException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -38,6 +41,7 @@ public class AdminControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "User remove failed")
     @ExceptionHandler(UserRemoveException.class)
     public ResponseEntity<Object> handleUserRemoveException(UserRemoveException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -48,6 +52,7 @@ public class AdminControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "User update failed")
     @ExceptionHandler(UserUpdateException.class)
     public ResponseEntity<Object> handleUserUpdateException(UserUpdateException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -58,6 +63,7 @@ public class AdminControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(GenericError.class)
     public ResponseEntity<Object> handleGenericError() {
         Map<String, Object> body = new LinkedHashMap<>();

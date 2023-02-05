@@ -1,6 +1,7 @@
 package com.monkeys.challenge.customer.infrastructure.rest.find;
 
 import com.monkeys.challenge.customer.application.services.find.CustomerFinder;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ public class GetCustomerByIdController {
 
     @GetMapping(value = "/customers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('read:customers')")
+    @Operation(summary = "Get customer by id", tags = {"customers"})
     public ResponseEntity getCustomerById(@PathVariable("id") String id) {
         log.debug("Received request to get the customer with id: {}", id);
         var response = customerFinder.getById(id);

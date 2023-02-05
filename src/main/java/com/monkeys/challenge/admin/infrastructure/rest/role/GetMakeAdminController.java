@@ -1,6 +1,7 @@
 package com.monkeys.challenge.admin.infrastructure.rest.role;
 
 import com.monkeys.challenge.admin.application.services.role.UserRoleManager;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ public class GetMakeAdminController {
 
     @GetMapping(value = "/users/{userId}/admin", produces = "application/json")
     @PreAuthorize("hasAuthority('update:users')")
+    @Operation(summary = "Change admin status of the given user", tags = {"users"})
     public ResponseEntity<UserAdminStatus> addRoleToUser(
             @PathVariable String userId
     ) {
