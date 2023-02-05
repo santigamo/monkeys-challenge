@@ -9,6 +9,11 @@ public class UserFinder {
 
         private final UserRepository userRepository;
 
+        /**
+         * Find all users
+         *
+         * @return {@link ListUsersResponse}
+         */
         public ListUsersResponse findAll() {
             var users = userRepository.findAll();
             return new ListUsersResponse(users);

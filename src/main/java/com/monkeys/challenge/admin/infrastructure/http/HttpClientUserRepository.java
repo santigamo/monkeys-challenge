@@ -27,15 +27,32 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * User repository implementation using HTTP Client.
+ * @author Santi
+ */
 @Log4j2
 public class HttpClientUserRepository implements UserRepository {
 
+    //* Token path fragment.
     private static final String TOKEN_PATH = "oauth/token";
+
+    //* Users path fragment.
     private static final String USER_PATH = "api/v2/users";
+
+    //* URL pattern for login
     private static final String LOGIN_BODY_PATTERN = "grant_type=password&username=%s&password=%s&audience=%s&client_id=%s&client_secret=%s";
+
+    //* JSON body pattern for getting a management token.
     private static final String MANAGEMENT_TOKEN_BODY_PATTERN = "{\"client_id\":\"%s\",\"client_secret\":\"%s\",\"audience\":\"https://monkey-challenge.uk.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}";
+
+    //* JSON body pattern for creating a user.
     private static final String CREATE_USER_BODY_PATTERN = "{\"email\":\"%s\",\"username\":\"%s\",\"password\":\"%s\",\"connection\":\"Username-Password-Authentication\"}";
-   private static final String UPDATE_USER_BODY_PATTERN = "{\"name\":\"%s\",\"username\":\"%s\"}";
+
+    //* JSON body pattern for updating a user.
+    private static final String UPDATE_USER_BODY_PATTERN = "{\"name\":\"%s\",\"username\":\"%s\"}";
+
+   //* JSON body pattern for adding a role to a user.
    private static final String ADMIN_ROLE_BODY_PATTERN = """
            {
               "roles": [
@@ -43,24 +60,43 @@ public class HttpClientUserRepository implements UserRepository {
               ]
             }
            """;
+
+   //* Bearer token prefix.
     public static final String BEARER = "Bearer ";
+
+    //* Internal server error message.
     public static final String INTERNAL_SERVER_ERROR = "Internal server error: {}";
+
+    //* Path fragment "/auth0|"
     public static final String AUTH0 = "/auth0%7C";
+
+    //* Message string.
     public static final String MESSAGE = "message";
+
+    //* Path fragment "/roles"
     public static final String ROLE_PATH_FRAGMENT = "/roles";
 
+    //* Issuer value of the OAuth2 provider.
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     @Setter(AccessLevel.PROTECTED)
     private String issuer;
+
+    //* Audience value of the OAuth2 provider.
     @Value("${auth0.audience}")
     @Setter(AccessLevel.PROTECTED)
     private String audience;
+
+    //* Client id value of the OAuth2 provider.
     @Value("${auth0.client-id}")
     @Setter(AccessLevel.PROTECTED)
     private String clientId;
+
+    //* Client secret value of the OAuth2 provider.
     @Value("${auth0.client-secret}")
     @Setter(AccessLevel.PROTECTED)
     private String clientSecret;
+
+    //* JSON mapper.
     private final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @SneakyThrows

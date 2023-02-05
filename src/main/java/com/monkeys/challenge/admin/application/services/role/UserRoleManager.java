@@ -12,6 +12,11 @@ public class UserRoleManager {
 
     private final UserRepository userRepository;
 
+    /**
+     * Changes the admin status of a user
+     * @param userId the user id
+     * @return true if the user is now an admin, false otherwise
+     */
     public boolean changeAdminStatus(String userId) {
         var roles = userRepository.getUserRoles(userId);
 

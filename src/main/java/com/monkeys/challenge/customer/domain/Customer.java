@@ -41,6 +41,10 @@ public class Customer {
         this(UUID.randomUUID(), name, surname, avatar, null, null);
     }
 
+    public Customer(String id, String name, String surname, String avatar) {
+        this(UUID.fromString(id), name, surname, avatar, null, null);
+    }
+
     /**
      * Full constructor.
      * @param id Customer id.

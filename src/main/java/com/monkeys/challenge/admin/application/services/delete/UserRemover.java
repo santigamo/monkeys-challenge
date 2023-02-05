@@ -10,6 +10,11 @@ public class UserRemover {
 
     private final UserRepository userRepository;
 
+    /**
+     * Removes a user
+     *
+     * @param id the id of the user to be removed
+     */
     public void remove(String id) {
         log.debug("Removing user with id: {}", id);
         userRepository.delete(id);
