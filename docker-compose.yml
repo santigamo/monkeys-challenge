@@ -3,7 +3,11 @@ version: '3.9'
 services:
   java-challenge-api:
     container_name: java-challenge-api
-    image: mvn:latest
+    build:
+        context: .
+        dockerfile: Dockerfile
+    env_file:
+      - spring.dev.env
     depends_on:
       - postgres-challenge-db
     ports:
@@ -26,7 +30,6 @@ services:
 
 volumes:
     challenge-volume:
-    challenge-maven-cache:
 
 networks:
     internal-net:
