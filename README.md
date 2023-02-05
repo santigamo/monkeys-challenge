@@ -65,7 +65,7 @@ You can access to the swagger UI by going to the following URL: [http://localhos
 specification in the following URL: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) or download it in yaml format: [http://localhost:8080/v3/api-docs.yaml](http://localhost:8080/v3/api-docs.yaml)
 
 ### Postman Collection
-Attached with the project is a [Postman collection](Monkeys%20Challenge.postman_collection.json) with all the API calls to easily test the application.
+Attached with the project is a [Postman collection](Monkey%20Challenge.postman_collection.json) with all the API calls to easily test the application.
 
 ## 👽 Technical Details
 ### 📚 Dependencies

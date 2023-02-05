@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -49,9 +50,6 @@ public class HttpClientUserRepository implements UserRepository {
     //* JSON body pattern for creating a user.
     private static final String CREATE_USER_BODY_PATTERN = "{\"email\":\"%s\",\"username\":\"%s\",\"password\":\"%s\",\"connection\":\"Username-Password-Authentication\"}";
 
-    //* JSON body pattern for updating a user.
-    private static final String UPDATE_USER_BODY_PATTERN = "{\"name\":\"%s\",\"username\":\"%s\"}";
-
    //* JSON body pattern for adding a role to a user.
    private static final String ADMIN_ROLE_BODY_PATTERN = """
            {
@@ -60,6 +58,9 @@ public class HttpClientUserRepository implements UserRepository {
               ]
             }
            """;
+
+   //* User role
+    private static final String USER_ROLE = "rol_ztujh4l4vQeaa7pZ";
 
    //* Bearer token prefix.
     public static final String BEARER = "Bearer ";
@@ -124,6 +125,11 @@ public class HttpClientUserRepository implements UserRepository {
             throw new UserCreationException();
         }
 
+        //? Add user role
+        var userId = mapper.readTree(response.body()).get("user_id").asText();
+        userId = userId.replace("auth0|", "");
+        this.addRole(userId, USER_ROLE);
+
         log.debug("User created successfully: {}", response.body());
     }
 
@@ -177,7 +183,14 @@ public class HttpClientUserRepository implements UserRepository {
         var token = getManagementToken();
 
         //? Prepare body
-        var body = String.format(UPDATE_USER_BODY_PATTERN, name, username);
+        String body = "";
+
+        if (StringUtils.hasText(name) && StringUtils.hasText(username))
+            body = String.format("{\"name\":\"%s\",\"username\":\"%s\"}", name, username);
+        else if (StringUtils.hasText(name))
+            body = String.format("{\"name\":\"%s\"}", name);
+        else if (StringUtils.hasText(username))
+            body = String.format("{\"username\":\"%s\"}", username);
 
         //? Create request
         HttpRequest request = HttpRequest.newBuilder()
