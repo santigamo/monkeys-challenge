@@ -4,6 +4,7 @@ import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.application.services.create.CustomerCreator;
 import com.monkeys.challenge.customer.application.services.create.CustomerCreatorRequest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("unit-test")
 class PostCreateCustomerControllerTest extends BaseTest {
 
     private CustomerCreator customerCreator;
@@ -38,7 +40,7 @@ class PostCreateCustomerControllerTest extends BaseTest {
         var request = new CustomerCreatorRequest(CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR);
         var expectedResponse = ResponseEntity
                 .created(URI.create("/customers/%s".formatted(CUSTOMER_ID)))
-                .build();
+                .body(new PostCreateCustomerController.CreateCustomerResponse(CUSTOMER_ID));
 
         when(customerCreator.create(any(),any())).thenReturn(CUSTOMER_ID);
         givenFixedUUID(CUSTOMER_ID);

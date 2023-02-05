@@ -1,12 +1,15 @@
 package com.monkeys.challenge.customer.infrastructure.persistence;
 
 import com.monkeys.challenge.BaseTest;
+import com.monkeys.challenge.admin.domain.exceptions.GenericError;
 import com.monkeys.challenge.customer.domain.Customer;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
 import com.monkeys.challenge.customer.domain.exceptions.CustomerAlreadyExistsException;
+import com.monkeys.challenge.customer.domain.exceptions.CustomerNotFoundException;
 import com.monkeys.challenge.shared.ChallengeApplication;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @Transactional
 @SpringBootTest(classes = ChallengeApplication.class)
+@Tag("unit-test")
 class PostgresCustomerRepositoryTest extends BaseTest {
 
 
@@ -84,6 +88,45 @@ class PostgresCustomerRepositoryTest extends BaseTest {
         // Then - The customer is deleted
         var customerList = repository.findAll();
         assertTrue(customerList.isEmpty());
+    }
+
+    @Test
+    void should_update_a_customer_successfully() {
+        // Given - An existent customer
+        givenExistingCustomer();
+
+        // When - The customer is updated
+        // Then - Do not throw any exception
+        assertDoesNotThrow(() -> repository.update(CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR, CREATOR_USER));
+    }
+
+    @Test
+    void should_fail_if_no_id_is_passed() {
+        // Given - No customers saved
+        givenExistingCustomer();
+        // When - The customer is updated
+        // Then - GenericError is thrown
+        assertThrows(GenericError.class, () -> repository.update(CUSTOMER_ID, null, null, null, null));
+    }
+
+    @Test
+    void should_find_customer_by_id() {
+        // Given - An existing customer
+        givenExistingCustomer();
+        // When - The customer is searched
+        var customer = repository.findById(CUSTOMER_ID);
+
+        // Then - The customer is found
+        assertNotNull(customer);
+    }
+
+    @Test
+    void should_fail_finding_a_customer_that_not_exists() {
+        // Given - No customers saved
+
+        // When - The customer is searched
+        // Then - CustomerNotFoundException is thrown
+        assertThrows(CustomerNotFoundException.class, () -> repository.findById(CUSTOMER_ID));
     }
 
     private void givenExistingCustomer() {

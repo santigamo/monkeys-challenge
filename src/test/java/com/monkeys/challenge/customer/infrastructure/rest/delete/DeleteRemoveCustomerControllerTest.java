@@ -3,6 +3,7 @@ package com.monkeys.challenge.customer.infrastructure.rest.delete;
 import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.application.services.delete.CustomerRemover;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.security.Principal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@Tag("unit-test")
 class DeleteRemoveCustomerControllerTest extends BaseTest {
 
     private CustomerRemover customerRemover;

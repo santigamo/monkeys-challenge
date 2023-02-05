@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import java.security.Principal;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class PatchUpdateCustomerControllerTest extends BaseTest {
 
@@ -33,9 +32,10 @@ class PatchUpdateCustomerControllerTest extends BaseTest {
         var expectedResponse = ResponseEntity.ok().build();
 
         // When - the controller is called
-        var response = controller.updateCustomer(principal, CUSTOMER_ID, request);
+        var actualResponse = controller.updateCustomer(principal, CUSTOMER_ID, request);
 
         // Then - the response is the expected one
-        assertEquals(expectedResponse, response);
+        assertEquals(expectedResponse, actualResponse);
+        verify(customerUpdater).update(CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR, CREATOR_USER);
     }
 }

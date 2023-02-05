@@ -5,7 +5,6 @@ import com.monkeys.challenge.admin.domain.UserRole;
 import com.monkeys.challenge.admin.domain.exceptions.*;
 import com.monkeys.challenge.admin.infrastructure.rest.find.User;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,8 +13,8 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 class HttpClientUserRepositoryTest {

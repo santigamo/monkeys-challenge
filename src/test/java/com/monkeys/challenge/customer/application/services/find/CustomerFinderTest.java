@@ -11,8 +11,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class CustomerFinderTest extends BaseTest {
 
@@ -52,6 +51,21 @@ class CustomerFinderTest extends BaseTest {
         assertTrue(actualCustomer.isEmpty());
     }
 
+    @Test
+    void should_get_user_by_id() {
+        // given
+        givenASavedCustomer();
+        var expectedCustomer = new CustomerFinder.CustomerDetailsDTO(UUID.fromString(CUSTOMER_ID), CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR, null, null);
+        var domainCustomer = new Customer(CUSTOMER_ID,CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR);
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(domainCustomer);
+        // when
+        var actualCustomer = customerFinder.getById(CUSTOMER_ID);
+
+        // then
+        verify(customerRepository, times(1)).findById(CUSTOMER_ID);
+        assertEquals(expectedCustomer, actualCustomer);
+    }
+
     private void thenTheCustomerShouldBeListed(List<CustomerFinder.CustomerDTO> actualCustomer) {
         var expectedCustomer = List.of(customer);
         assertEquals(expectedCustomer, actualCustomer);
@@ -62,9 +76,7 @@ class CustomerFinderTest extends BaseTest {
     }
 
     private void givenASavedCustomer() {
-        givenFixedUUID(CUSTOMER_ID);
-        Customer customer = new Customer(CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR);
-        givenFixedUUID(CUSTOMER_ID);
+        Customer customer = new Customer(CUSTOMER_ID,CUSTOMER_NAME, CUSTOMER_SURNAME, CUSTOMER_AVATAR);
         when(customerRepository.findAll()).thenReturn(List.of(customer));
     }
 }
