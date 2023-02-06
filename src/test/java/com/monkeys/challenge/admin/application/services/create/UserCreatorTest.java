@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class UserCreatorTest extends BaseTest {
 
@@ -27,12 +26,14 @@ class UserCreatorTest extends BaseTest {
         var email = "test@email.com";
         var username = "unit-test";
         var password = "Password!";
+        when(userRepository.createUser(email,username, password)).thenReturn("auth0|1234567890");
 
         // When
         userCreator.create(email, username, password);
 
         // Then
+
         verify(userRepository).createUser(email, username, password);
-        verify(userRepository).addRole(any(), any());
+        verify(userRepository).addRole(eq("1234567890"), anyString());
     }
 }
