@@ -38,8 +38,8 @@ Go to `http://localhost:8080/actuator/health` to see that everything is up & run
 
 ## 🎯 API Documentation
 **_To simplify the initial use of the API, a user with administrator permissions has been provided:_**
-Username: `test@email.com`
-Password: `Password!`
+- Username: `test@email.com`
+- Password: `Password!`
 
 ### Public endpoints
 - `GET /actuator/health` - Health check
@@ -63,7 +63,7 @@ Password: `Password!`
 - `PATCH /customers/{id}` - Update customer
 
 ### All the API calls are documented using OpenAPI
-You can access to the swagger UI by going to the following URL: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html), additionally you can get the OpenAPI 
+Once the app is running, you can access to the swagger UI by going to the following URL: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html), additionally you can get the OpenAPI 
 specification in the following URL: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) or download it in yaml format: [http://localhost:8080/v3/api-docs.yaml](http://localhost:8080/v3/api-docs.yaml)
 
 ### Postman Collection
