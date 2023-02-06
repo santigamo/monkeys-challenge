@@ -37,7 +37,7 @@ The project follows a clean architecture, with the application layer interacting
 Go to `http://localhost:8080/actuator/health` to see that everything is up & running!
 
 ## 🎯 API Documentation
-**_To simplify the initial use of the API, a user with administrator permissions has been provided:_**
+**_ ℹ️ To simplify the initial use of the API, a user with administrator permissions has been provided:_**
 - Username: `test@email.com`
 - Password: `Password!`
 
