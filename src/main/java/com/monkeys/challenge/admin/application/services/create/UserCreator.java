@@ -12,7 +12,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserCreator {
 
+    //* The user repository.
     private final UserRepository userRepository;
+
+    //* Default role
+    private static final String DEFAULT_ROLE = "rol_ztujh4l4vQeaa7pZ";
 
     /**
      * Creates a new user.
@@ -22,6 +26,11 @@ public class UserCreator {
      */
     public void create(String email, String username, String password) {
         log.debug("Creating user {}", username);
-        userRepository.createUser(email, username, password);
+        var userId = userRepository.createUser(email, username, password);
+        userId = userId.replace("auth0|", "");
+        log.debug("User {} created with id {}", username, userId);
+        log.debug("assigning default role to user {}", username);
+        userRepository.addRole(userId, DEFAULT_ROLE);
+        log.debug("default role assigned successfully to user {}", username);
     }
 }

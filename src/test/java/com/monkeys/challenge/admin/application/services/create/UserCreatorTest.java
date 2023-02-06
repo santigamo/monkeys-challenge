@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -32,5 +33,6 @@ class UserCreatorTest extends BaseTest {
 
         // Then
         verify(userRepository).createUser(email, username, password);
+        verify(userRepository).addRole(any(), any());
     }
 }

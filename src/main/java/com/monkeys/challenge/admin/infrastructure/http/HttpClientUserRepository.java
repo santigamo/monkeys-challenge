@@ -59,9 +59,6 @@ public class HttpClientUserRepository implements UserRepository {
             }
            """;
 
-   //* User role
-    private static final String USER_ROLE = "rol_ztujh4l4vQeaa7pZ";
-
    //* Bearer token prefix.
     public static final String BEARER = "Bearer ";
 
@@ -102,7 +99,7 @@ public class HttpClientUserRepository implements UserRepository {
 
     @SneakyThrows
     @Override
-    public void createUser(String email, String username, String password) {
+    public String createUser(String email, String username, String password) {
         //? Get management api token
         var token = getManagementToken();
 
@@ -125,12 +122,8 @@ public class HttpClientUserRepository implements UserRepository {
             throw new UserCreationException();
         }
 
-        //? Add user role
-        var userId = mapper.readTree(response.body()).get("user_id").asText();
-        userId = userId.replace("auth0|", "");
-        this.addRole(userId, USER_ROLE);
-
         log.debug("User created successfully: {}", response.body());
+        return mapper.readTree(response.body()).get("user_id").asText();
     }
 
     @SneakyThrows

@@ -53,6 +53,7 @@ class HttpClientUserRepositoryTest {
         var password = "password123";
 
         when(response.statusCode()).thenReturn(201);
+        when(response.body()).thenReturn(USER_JSON);
         // When/Then - the user is created not throwing an exception
         assertDoesNotThrow(() -> userRepository.createUser(email, username, password));
     }
