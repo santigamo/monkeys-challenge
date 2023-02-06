@@ -41,20 +41,20 @@ Go to `http://localhost:8080/actuator/health` to see that everything is up & run
 - Username: `test@email.com`
 - Password: `Password!`
 
-### Public endpoints
+### 📢 Public endpoints
 - `GET /actuator/health` - Health check
 - `POST /login` - Login
 - `GET /swagger-ui.html` - Swagger UI
 - `GET /v3/api-docs` - OpenAPI specification
 
-### Admin permissions
+### 🔒 Admin permissions
 - `GET /users` - List all users
 - `POST /users` - Create new user
 - `DELETE /users/{id}` - Remove a user
 - `PATCH /users/{id}` - Update a user
 - `GET /users/{id}/admin` - Change admin status
 
-### Customer permissions
+### 🧍 Customer permissions
 - `GET /image/upload` - Upload an image
 - `GET /customers` - List all customers
 - `POST /customers` - Create customer
