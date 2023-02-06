@@ -2,6 +2,8 @@ package com.monkeys.challenge;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.monkeys.challenge.admin.domain.UserRepository;
+import com.monkeys.challenge.admin.infrastructure.rest.find.User;
 import com.monkeys.challenge.customer.domain.Customer;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
 import org.mockito.MockedStatic;
@@ -9,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.security.config.http.MatcherType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.mockStatic;
@@ -52,5 +55,19 @@ public class BaseTest {
         try (MockedStatic<UUID> uuidMockedStatic = Mockito.mockStatic(UUID.class)) {
             uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuid);
         }
+    }
+
+    protected Optional<User> getCreatedUser(UserRepository userRepository, String userEmail) {
+        return userRepository.findAll().stream().filter(user -> user.email().equals(userEmail)).findFirst();
+    }
+
+    protected String givenSavedTestUser(UserRepository userRepository) {
+        userRepository.createUser("integration@test.com", "jdoe", "Password!");
+        var user = getCreatedUser(userRepository, "integration@test.com");
+        return user.get().id();
+    }
+
+    protected void removeCreatedUser(UserRepository userRepository, String id) {
+        userRepository.delete(id);
     }
 }
