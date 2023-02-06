@@ -34,6 +34,8 @@ The project follows a clean architecture, with the application layer interacting
 1. Install docker and docker-compose on your computer, if you do not already have it.
 2. Start the application: `docker-compose up`
 
+Go to `http://localhost:8080/actuator/health` to see that everything is up & running!
+
 ## 🎯 API Documentation
 **_To simplify the initial use of the API, a user with administrator permissions has been provided:_**
 Username: `test@email.com`
