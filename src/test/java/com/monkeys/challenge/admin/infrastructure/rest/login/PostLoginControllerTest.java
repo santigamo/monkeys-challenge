@@ -2,6 +2,7 @@ package com.monkeys.challenge.admin.infrastructure.rest.login;
 
 import com.monkeys.challenge.admin.application.services.login.LoginService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +10,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("unit-test")
 class PostLoginControllerTest {
 
     private LoginService loginService;

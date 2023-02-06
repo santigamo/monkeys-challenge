@@ -2,6 +2,7 @@ package com.monkeys.challenge.customer.infrastructure.rest.image;
 
 import com.monkeys.challenge.customer.application.services.image.ImageUploader;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@Tag("unit-test")
 class PostUploadImageControllerTest {
 
     private ImageUploader imageUploader;

@@ -4,6 +4,7 @@ import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.application.services.find.CustomerFinder;
 import com.monkeys.challenge.customer.domain.Customer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("unit-test")
 class GetListCustomersControllerTest extends BaseTest {
 
     private CustomerFinder customerFinder;

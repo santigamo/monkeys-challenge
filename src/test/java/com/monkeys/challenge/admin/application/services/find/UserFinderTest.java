@@ -4,6 +4,7 @@ import com.monkeys.challenge.admin.domain.UserRepository;
 import com.monkeys.challenge.admin.infrastructure.rest.find.ListUsersResponse;
 import com.monkeys.challenge.admin.infrastructure.rest.find.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("unit-test")
 class UserFinderTest {
 
     UserRepository userRepository;

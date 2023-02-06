@@ -4,6 +4,7 @@ import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.domain.Customer;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Tag("unit-test")
 class CustomerRemoverTest extends BaseTest {
     private CustomerRepository customerRepository;
     private CustomerRemover customerRemover;

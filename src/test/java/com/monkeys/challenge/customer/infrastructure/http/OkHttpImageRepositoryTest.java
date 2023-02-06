@@ -4,10 +4,12 @@ import com.monkeys.challenge.admin.domain.exceptions.GenericError;
 import com.monkeys.challenge.customer.domain.ImageRepository;
 import okhttp3.Request;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit-test")
 class OkHttpImageRepositoryTest {
 
     ImageRepository repository;

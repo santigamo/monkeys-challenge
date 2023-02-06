@@ -159,6 +159,23 @@ public class PostgresCustomerRepository implements CustomerRepository {
         log.debug("Deleted customer with id: {}", id);
     }
 
+    /**
+     *
+     */
+    @Override
+    public void deleteAll() {
+        //? Delete all customers
+        var query = "DELETE FROM customer";
+
+        //? Execute query
+        jdbcTemplate.update(
+                query, new MapSqlParameterSource()
+        );
+
+        log.debug("Deleted all customers");
+
+    }
+
     private static RowMapper<Customer> mapRow() {
         return (rs, rowNum) -> Customer.builder()
                 .id(UUID.fromString(rs.getString("id")))

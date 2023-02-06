@@ -5,12 +5,14 @@ import com.monkeys.challenge.customer.domain.CustomerRepository;
 import com.monkeys.challenge.customer.domain.exceptions.InvalidCustomerNameException;
 import com.monkeys.challenge.customer.domain.exceptions.InvalidCustomerSurnameException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@Tag("unit-test")
 class CustomerCreatorTest extends BaseTest {
 
     private CustomerRepository customerRepository;

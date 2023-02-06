@@ -40,4 +40,9 @@ public interface CustomerRepository {
      * @param id The id of the {@link Customer} to delete
      */
     void delete(String id);
+
+    /**
+     * Delete all {@link Customer} in the database
+     */
+    void deleteAll();
 }

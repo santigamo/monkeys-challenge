@@ -4,6 +4,7 @@ import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.domain.Customer;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+@Tag("unit-test")
 class CustomerFinderTest extends BaseTest {
 
     private CustomerRepository customerRepository;

@@ -92,5 +92,7 @@ Attached with the project is a [Postman collection](Monkey%20Challenge.postman_c
     - `server.shutdown = graceful`: This property is responsible for allowing the application to finish the current requests before shutting down.
 - [DB Migration folder](src/main/resources/db/migration): This folder contains the scripts that are executed when the application starts. Are responsible for creating the tables in the database if they do not exist and migrating the database if necessary.
 - Exception are defined individually in the [exception package](src/main/java/com/monkeys/challenge/customer/infrastructure/exceptions) and are managed by the [ControllerAdvisor](src/main/java/com/monkeys/challenge/customer/infrastructure/exceptions/CustomerControllerAdvisor.java) to keep a simple but ordered and powerful error handling.
-- Testing: The project has a current unit tests coverage of 86% of the lines of code. Could be increased, finishing the configuration of the classes that should be excluded from the test.
+- Testing: The project has a current testing coverage of 90% of the lines of code. Could be increased, finishing the configuration of the classes that should be excluded from the test.
+  - Unit Tests: All the unit tests classes are tagged with the `@Tag("unit-test")` annotation to be able to execute them separately from the integration tests.
+  - Integration Tests: All the integration tests classes are tagged with the `@Tag("integration-test")` annotation to be able to execute them separately from the unit tests.
     

@@ -5,6 +5,7 @@ import com.monkeys.challenge.admin.domain.UserRole;
 import com.monkeys.challenge.admin.domain.exceptions.*;
 import com.monkeys.challenge.admin.infrastructure.rest.find.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
+@Tag("unit-test")
 class HttpClientUserRepositoryTest {
 
     public static final String BAD_REQUEST_RESPONSE = """

@@ -3,6 +3,7 @@ package com.monkeys.challenge.customer.infrastructure.rest.update;
 import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.application.services.update.CustomerUpdater;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -11,6 +12,7 @@ import java.security.Principal;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Tag("unit-test")
 class PatchUpdateCustomerControllerTest extends BaseTest {
 
     private CustomerUpdater customerUpdater;

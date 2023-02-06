@@ -2,6 +2,7 @@ package com.monkeys.challenge.admin.infrastructure.rest.role;
 
 import com.monkeys.challenge.admin.application.services.role.UserRoleManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("unit-test")
 class GetMakeAdminControllerTest {
 
     UserRoleManager userRoleManager;

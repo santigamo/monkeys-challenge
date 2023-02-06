@@ -2,6 +2,7 @@ package com.monkeys.challenge.admin.infrastructure.rest.find;
 
 import com.monkeys.challenge.admin.application.services.find.UserFinder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("unit-test")
 class GetListUsersControllerTest {
 
     UserFinder userFinder;

@@ -2,6 +2,8 @@ package com.monkeys.challenge.customer.infrastructure.exceptions;
 
 import com.monkeys.challenge.customer.domain.exceptions.CustomerAlreadyExistsException;
 import com.monkeys.challenge.customer.domain.exceptions.CustomerNotFoundException;
+import com.monkeys.challenge.customer.domain.exceptions.InvalidCustomerNameException;
+import com.monkeys.challenge.customer.domain.exceptions.InvalidCustomerSurnameException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,5 +42,27 @@ public class CustomerControllerAdvisor extends ResponseEntityExceptionHandler {
         body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    //* Handles InvalidCustomerNameException.
+    @ExceptionHandler(InvalidCustomerNameException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid customer name")
+    public ResponseEntity<Object> handleInvalidCustomerNameException(InvalidCustomerNameException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    //* Handles InvalidCustomerSurnameException.
+    @ExceptionHandler(InvalidCustomerSurnameException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid customer surname")
+    public ResponseEntity<Object> handleInvalidCustomerSurnameException(InvalidCustomerSurnameException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }

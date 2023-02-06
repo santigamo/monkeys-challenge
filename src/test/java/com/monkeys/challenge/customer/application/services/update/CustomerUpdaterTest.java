@@ -3,12 +3,14 @@ package com.monkeys.challenge.customer.application.services.update;
 import com.monkeys.challenge.BaseTest;
 import com.monkeys.challenge.customer.domain.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@Tag("unit-test")
 class CustomerUpdaterTest extends BaseTest {
 
     private CustomerRepository customerRepository;
